@@ -1,0 +1,48 @@
+{% extends "meetups/base.html" %}
+{% load static %}
+
+{% block title %}{{meet.title}}{% endblock title %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static "meetups/styles/meetup-details.css" %}">
+{% endblock styles %}
+
+{% block header %}{{meet.title}}{% endblock header %}
+
+{% block content %}{% endblock content %}
+
+{% block body %}
+
+{% if found %}
+
+<article>
+    <img id="main-image" src={{meet.image.url}} alt="meet.slug">
+    <section id="location">
+        <h2>Meetup Location</h2>
+        <address>This meetup is taking place at {{meet.location}}</address>
+    </section>
+    <section id="details">
+        <h2>What's this meetup about</h2>
+        <p>{{meet.description}}</p>
+        <footer>
+            <p>For further details, Please contact <a href="mailto:{{meet.organizer}}">Organizer.</a></p>
+        </footer>
+    </section>
+    <section id="registration">
+        <h3>Join Us</h3>
+        <form action="{% url "meetup-details" meet.slug %}" method="POST">
+            {% csrf_token %}
+            <ul>
+                {{ form.as_ul}}
+            </ul>
+            <div id="registration-actions"><button type="submit">Register</button></div>
+        </form>
+    </section>
+</article>
+
+{% else %}
+    <h1>No Meetups Found!</h1>
+{% endif %}
+
+{% endblock body %}
+
